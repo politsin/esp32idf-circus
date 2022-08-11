@@ -32,10 +32,10 @@ extern "C" void app_main(void) {
 
   // tasks.
   xTaskCreate(&loop, "loop", min * 3, NULL, 2, NULL);
-  xTaskCreate(blinkTask, "blink", min * 2, NULL, 1, &blink);
   xTaskCreate(buttonTask, "button", min * 3, NULL, 1, &button);
+  xTaskCreate(blinkTask, "blink", min * 2, NULL, 1, &blink);
   xTaskCreate(encoderTask, "encoder", min * 3, NULL, 1, &encoder);
-  xTaskCreate(stepperTask, "stepper", min * 3, NULL, 1, &stepper);
+  // xTaskCreate(stepperTask, "stepper", min * 3, NULL, 1, &stepper);
   // chip_info(); restart();
 }
 

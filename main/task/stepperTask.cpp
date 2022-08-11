@@ -10,7 +10,7 @@
 DendoStepper_config_t dConfig = {
     .step_p = (uint8_t)GPIO_NUM_13,
     .dir_p = (uint8_t)GPIO_NUM_15,
-    .en_p = (uint8_t)GPIO_NUM_2,
+    .en_p = (uint8_t)GPIO_NUM_14,
     .timer_group = (timer_group_t)TIMER_GROUP_0,
     .timer_idx = (timer_idx_t) TIMER_0,
     .miStep = MICROSTEP_1

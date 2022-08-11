@@ -17,9 +17,9 @@ using std::string;
 #include "encoderTask.h"
 
 // ENCODER.
-static const gpio_num_t encoderS1 = GPIO_NUM_16;
-static const gpio_num_t encoderS2 = GPIO_NUM_17;
-static const gpio_num_t encoderBtn = GPIO_NUM_5;
+static const gpio_num_t encoderS1 = GPIO_NUM_0;
+static const gpio_num_t encoderS2 = GPIO_NUM_15;
+static const gpio_num_t encoderBtn = GPIO_NUM_34;
 static const uint32_t debouncsEnc = 100;
 static const uint32_t debouncsBtn = 100;
 rotenc_handle_t handle = {};
