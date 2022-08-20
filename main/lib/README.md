@@ -1,3 +1,3 @@
 
-GPL-3.0 license
-https://github.com/eldendiss/DendoStepper
+* GPL-3.0 license
+* https://github.com/eldendiss/DendoStepper
