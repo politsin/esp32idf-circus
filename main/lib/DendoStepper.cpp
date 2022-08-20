@@ -53,6 +53,10 @@ bool DendoStepper::xISR()
     //add and substract one step
     if(state==0)
         return 0; //just turn off the pin in this iteration
+    if (true) {
+      timer_set_alarm_value(conf.timer_group, conf.timer_idx, ctrl.stepInterval);
+      return 1;
+    }
     
     ctrl.stepCnt++;
     ctrl.stepsToGo--;
@@ -151,6 +155,21 @@ void DendoStepper::init(uint8_t stepP,uint8_t dirP,uint8_t enP,timer_group_t gro
     ESP_ERROR_CHECK(timer_init(conf.timer_group, conf.timer_idx, &timer_conf));   //init the timer
     ESP_ERROR_CHECK(timer_set_counter_value(conf.timer_group, conf.timer_idx, 0)); //set it to 0
     ESP_ERROR_CHECK(timer_isr_callback_add(conf.timer_group, conf.timer_idx, xISRwrap, this, 0)); //add callback fn to run when alarm is triggrd
+}
+
+esp_err_t DendoStepper::runPermanent(bool dir)
+{
+    setDir(dir);
+    ctrl.status=ACC;
+    double x =
+        (float)TIMER_F * sqrt((((4 * 3.14) / (200.0 * (float)conf.miStep))));
+    ctrl.stepInterval = x / ctrl.acc;
+    ESP_ERROR_CHECK(timer_set_alarm_value(
+        conf.timer_group, conf.timer_idx,
+        ctrl.stepInterval));
+    ESP_ERROR_CHECK(
+        timer_start(conf.timer_group, conf.timer_idx));
+    return ESP_OK;
 }
 
 esp_err_t DendoStepper::runPos(int32_t relative)

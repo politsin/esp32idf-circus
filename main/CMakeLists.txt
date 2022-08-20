@@ -3,6 +3,7 @@ idf_component_register(
   "main.cpp"
   "lib/DendoStepper.cpp"
   "task/blinkTask.cpp"
+  "task/configTask.cpp"
   "task/buttonTask.cpp"
   "task/encoderTask.cpp"
   "task/stepperTask.cpp"

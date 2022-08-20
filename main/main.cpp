@@ -10,8 +10,8 @@
 #define MAINTAG "MAIN"
 // Tasks.
 #include "task/blinkTask.h"
-// #include "task/ds18b20Task.h"
 #include "task/buttonTask.h"
+#include "task/configTask.h"
 #include "task/encoderTask.h"
 #include "task/stepperTask.h"
 
@@ -22,20 +22,27 @@ static constexpr Pintype PIN_LED = GPIO_NUM_22;
 void loop(void *pvParameter);
 
 TaskHandle_t blink;
+TaskHandle_t config;
 TaskHandle_t button;
 TaskHandle_t encoder;
 TaskHandle_t stepper;
 extern "C" void app_main(void) {
   esp_log_level_set("wifi", ESP_LOG_WARN);
   esp_log_level_set("gpio", ESP_LOG_WARN);
+  esp_log_level_set("calc", ESP_LOG_WARN);
+  esp_log_level_set("DendoStepper", ESP_LOG_WARN);
+  esp_log_level_set("BUTTON", ESP_LOG_WARN);
+  esp_log_level_set("CONFIG", ESP_LOG_WARN);
+  // esp_log_level_set("ENCODER", ESP_LOG_WARN);
   uint32_t min = 768 + configSTACK_OVERHEAD_TOTAL;
 
   // tasks.
   xTaskCreate(&loop, "loop", min * 3, NULL, 2, NULL);
-  xTaskCreate(buttonTask, "button", min * 3, NULL, 1, &button);
   xTaskCreate(blinkTask, "blink", min * 2, NULL, 1, &blink);
+  xTaskCreate(buttonTask, "button", min * 3, NULL, 1, &button);
+  xTaskCreate(configTask, "config", min * 4, NULL, 1, &config);
   xTaskCreate(encoderTask, "encoder", min * 3, NULL, 1, &encoder);
-  // xTaskCreate(stepperTask, "stepper", min * 3, NULL, 1, &stepper);
+  xTaskCreate(stepperTask, "stepper", min * 8, NULL, 1, &stepper);
   // chip_info(); restart();
 }
 

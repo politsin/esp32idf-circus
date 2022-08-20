@@ -161,6 +161,7 @@ public:
      *  @param relative number of steps to run, negative is reverse 
      */
     esp_err_t runPos(int32_t relative);
+    esp_err_t runPermanent(bool dir);
 
     /** @brief sets motor speed
      *  @param speed speed in steps per second

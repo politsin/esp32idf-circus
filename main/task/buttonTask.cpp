@@ -12,6 +12,7 @@ static const Pintype BUTTON_PIN2 = GPIO_NUM_33;
 #define BUTTON_TAG "BUTTON"
 
 typedef gpio_num_t Pintype;
+#include "configTask.h"
 #include "main.h"
 
 static const char *states[] = {
@@ -27,30 +28,32 @@ static void on_button(button_t *btn, button_state_t state) {
   // static constexpr Pintype PIN_LED1 = GPIO_NUM_12;
   // static constexpr Pintype PIN_LED2 = GPIO_NUM_14;
   // const TickType_t xBlockTime = pdMS_TO_TICKS(25);
+  // 0xFFFFFFFF
   if (state == BUTTON_PRESSED) {
     if (btn == &btn1) {
       ESP_LOGI(BUTTON_TAG, "RED PRESSED");
-      // xTaskNotify(mcp23x17, -1, eSetValueWithOverwrite);
+      xTaskNotify(config, 1 << 16 | 0x01, eSetValueWithOverwrite);
     }
     if (btn == &btn2) {
       ESP_LOGI(BUTTON_TAG, "BLUE PRESSED");
-      // xTaskNotify(hx711, 1, eSetValueWithOverwrite);
+      xTaskNotify(config, 1 << 16 | 0x02, eSetValueWithOverwrite);
     }
-
   }
   if (state == BUTTON_RELEASED) {
     if (btn == &btn1) {
       ESP_LOGI(BUTTON_TAG, "RED RELEASED");
-      // xTaskNotify(mcp23x17, -0, eSetValueWithOverwrite);
+      xTaskNotify(config, 0 << 16 | 0x01, eSetValueWithOverwrite);
     }
     if (btn == &btn2) {
       ESP_LOGI(BUTTON_TAG, "BLUE RELEASED");
       vTaskDelay(pdMS_TO_TICKS(500));
-      // xTaskNotify(hx711, 0, eSetValueWithOverwrite);
+      xTaskNotify(config, 0 << 16 | 0x02, eSetValueWithOverwrite);
     }
   }
-  ESP_LOGI(BUTTON_TAG, "%s button %s", btn == &btn1 ? "First" : "Second",
-           states[state]);
+  if (false) {
+    ESP_LOGI(BUTTON_TAG, "%s button %s", btn == &btn1 ? "First" : "Second",
+             states[state]);
+  }
 }
 void buttonTask(void *pvParam) {
   // First button connected between GPIO and GND
